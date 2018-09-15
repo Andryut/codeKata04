@@ -1,17 +1,23 @@
 class TableFile
-  def initialize fileName:
-    if File.exist? fileName
-      @dataFile = File.new fileName
+
+  def initialize file_name:
+    if File.exist? file_name
+      self.create_file file_name: file_name
       @data = Array.new
       self.update
     end
   end
 
   def update
-    unless @dataFile.nil?
-      self.extractData
-      self.closeFile
+    unless @data_file.nil?
+      self.create_file file_name: @file_name
+      self.extract_data
+      self.close_file
     end
+  end
+
+  def data
+    @data
   end
 
   def to_s
@@ -23,34 +29,40 @@ class TableFile
   end
 
   protected
-  def extractData
-    unless @dataFile.nil?
-      headers = @dataFile.gets
+
+  def extract_data
+    unless @data_file.nil?
+      headers = @data_file.gets
       @data[0] = headers.split
-      i = 1
-      @dataFile.each_line do |line|
-        @data[i] = Array.new
+      row = 1
+      @data_file.each_line do |line|
+        @data[row] = Array.new
         tokens = line.split
-        tokenNumb = 0
+        token_numb = 0
         @data[0].each do |head|
           unless line[headers.index(head)+head.length-1] == ' '
-            if tokens[tokenNumb] == '-'
-              tokenNumb += 1
+            if tokens[token_numb] == '-'
+              token_numb += 1
             end
-            @data[i] << tokens[tokenNumb]
-            tokenNumb += 1
+            @data[row] << tokens[token_numb]
+            token_numb += 1
           else
-            @data[i] << nil
+            @data[row] << nil
           end
         end
-        i += 1
+        row += 1
       end
     end
   end
 
-  def closeFile
-    unless @dataFile.nil?
-      @dataFile.close
+  def create_file file_name:
+    @file_name = file_name
+    @data_file = File.new file_name
+  end
+
+  def close_file
+    unless @data_file.nil?
+      @data_file.close
     end
   end
 end
