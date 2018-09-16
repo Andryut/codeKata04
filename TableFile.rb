@@ -1,3 +1,5 @@
+load "DataTable.rb"
+
 class TableFile
 
   def initialize file_name:
@@ -16,8 +18,14 @@ class TableFile
     end
   end
 
-  def data
-    @data
+  def generate_data_table name_col:, value_one_col:, value_two_col:
+    data_table = DataTable.new
+    @data.each do |row|
+      unless row[0].to_i == 0
+        data_table.add_row(name: row[name_col], value_one: row[value_one_col], value_two: row[value_two_col])
+      end
+    end
+    return data_table
   end
 
   def to_s

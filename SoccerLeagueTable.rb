@@ -22,11 +22,6 @@ class SoccerLeagueTable
   protected
 
   def fill_data_table
-    @data_table = DataTable.new
-    @table.data.each do |row|
-      unless row[0].to_i == 0
-        @data_table.add_row(name: row[1], value_one: row[6], value_two: row[7])
-      end
-    end
+    @data_table = @table.generate_data_table(name_col: 1, value_one_col: 6, value_two_col: 7)
   end
 end

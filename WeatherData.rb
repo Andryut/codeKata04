@@ -22,11 +22,6 @@ class WeatherData
   protected
 
   def fill_data_table
-    @data_table = DataTable.new
-    @table.data.each do |row|
-      unless row[0].to_i == 0
-        @data_table.add_row(name: row[0], value_one: row[1], value_two: row[2])
-      end
-    end
+    @data_table = @table.generate_data_table(name_col: 0, value_one_col: 1, value_two_col: 2)
   end
 end
